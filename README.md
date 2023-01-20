@@ -1,16 +1,5 @@
 # forbidden_lands
 
-A new Flutter project.
+Flutter application as practical part of bachelor thesis "Design and implementation of a mobile application with a cross-platform solution" written by Jana Vonšák.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The repo provides an implementation for a cross-platform mobile application serving as a tool for players of the offline role-playing game Forbidden Lands. 
