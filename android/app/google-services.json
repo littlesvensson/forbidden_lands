@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "576452479107",
+    "project_id": "forbidden-lands-9083c",
+    "storage_bucket": "forbidden-lands-9083c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:576452479107:android:a2b44be6f32a40e323f3b6",
+        "android_client_info": {
+          "package_name": "com.example.forbidden_lands"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "576452479107-p4i1uu81parss0bne6mt0ncaujcn5nun.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA40yV6_bkbQhZ6lE9kPHiNe-XAH1wt2G4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "576452479107-p4i1uu81parss0bne6mt0ncaujcn5nun.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "576452479107-t4i3tjh367crp2ruddj41c6b79s2jb1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.forbiddenLands"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
