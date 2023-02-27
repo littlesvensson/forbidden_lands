@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:forbidden_lands/screens/temp_screen.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
-import './quiz.dart';
-import './result.dart';
+import './screens/auth_screen.dart';
+import './providers/auth.dart';
 
-void main() async {
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // added line
+  await DotEnv.load(fileName: '.env');
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -16,63 +21,35 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _MyAppState();
-  }
-}
-
-class _MyAppState extends State<MyApp> {
-  static const _questions = const [
-    {
-      'questionText': 'Ako sa mas?',
-      'answers': [
-        {'text': 'super', 'score': 0},
-        {'text': 'dobre', 'score': 2},
-        {'text': 'hrozne', 'score': 3}
-      ]
-    },
-    {
-      'questionText': 'Ake mas topanky?',
-      'answers': [
-        {'text': 'pekne', 'score': 1},
-        {'text': '38', 'score': 2},
-        {'text': 'skarede', 'score': 3}
-      ],
-    },
-  ];
-
-  int _questionIndex = 0;
-  var _totalScore = 0;
-
-  void _resetQuiz() {
-    setState(() {
-      _questionIndex = 0;
-      _totalScore = 0;
-    });
-  }
-
-  void _answerQuestion(int score) {
-    _totalScore += score;
-    setState(() {
-      _questionIndex = _questionIndex + 1;
-    });
-    print(_questionIndex);
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Moja prva Flutter appka'),
-        ),
-        body: _questionIndex < _questions.length
-            ? Quiz(answerQuestion: _answerQuestion, questions: _questions, questionIndex: _questionIndex)
-            : Result(_totalScore, _resetQuiz),
-      ),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider.value(
+            value: Auth(),
+          ),
+        ],
+        child: Consumer<Auth>(
+          builder: (ctx, auth, _) => MaterialApp(
+              title: 'Forbidden Lands',
+              theme: ThemeData(
+                primarySwatch: Colors.brown,
+                colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.brown,
+                  accentColor: Colors.deepOrange,
+                ),
+                textTheme: TextTheme(
+                  headline1: TextStyle(fontFamily: 'Montserrat', fontSize: 24.0, fontWeight: FontWeight.bold),
+                  headline2: TextStyle(fontFamily: 'Montserrat', fontSize: 20.0, fontWeight: FontWeight.bold),
+                  bodyText1: TextStyle(fontFamily: 'Open Sans', fontSize: 16.0),
+                  bodyText2: TextStyle(fontFamily: 'Open Sans', fontSize: 14.0),
+                ),
+              ),
+              home: auth.isAuth ? TempScreen() : AuthScreen(),
+              routes: {
+                TempScreen.routeName: ((ctx) => TempScreen()),
+              }),
+        ));
   }
 }
