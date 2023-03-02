@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:forbidden_lands/screens/dash_screen.dart';
+import 'package:forbidden_lands/screens/edit_character_screen.dart';
 import 'package:forbidden_lands/screens/temp_screen.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.brown,
                 colorScheme: ColorScheme.fromSwatch(
                   primarySwatch: Colors.brown,
-                  accentColor: Colors.deepOrange,
+                  accentColor: Colors.brown,
                 ),
                 textTheme: TextTheme(
                   headline1: TextStyle(fontFamily: 'Montserrat', fontSize: 24.0, fontWeight: FontWeight.bold),
@@ -47,10 +48,11 @@ class MyApp extends StatelessWidget {
                   bodyText2: TextStyle(fontFamily: 'Open Sans', fontSize: 14.0),
                 ),
               ),
-              home: auth.isAuth ? DashScreen() : AuthScreen(),
+              home: auth.isAuth ? DashScreen(auth.token, auth.userId) : AuthScreen(),
               routes: {
                 TempScreen.routeName: ((ctx) => TempScreen()),
-                DashScreen.routeName: ((ctx) => DashScreen()),
+                DashScreen.routeName: ((ctx) => DashScreen(auth.token, auth.userId)),
+                EditCharacterScreen.routeName: ((ctx) => EditCharacterScreen(auth.token, auth.userId)),
               }),
         ));
   }

@@ -21,6 +21,7 @@ class Auth with ChangeNotifier {
   }
 
   String get token {
+    print('token from get token: $_token');
     if (_expiryDate != null && _expiryDate.isAfter(DateTime.now()) && _token != null) {
       return _token;
     }
@@ -61,6 +62,7 @@ class Auth with ChangeNotifier {
           'expiryDate': _expiryDate.toIso8601String(),
         },
       );
+      print('extractedUserData: $userData');
       prefs.setString('userData', userData);
     } catch (error) {
       throw error;
