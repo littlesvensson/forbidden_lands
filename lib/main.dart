@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:forbidden_lands/screens/dash_screen.dart';
-import 'package:forbidden_lands/screens/edit_character_screen.dart';
-import 'package:forbidden_lands/screens/temp_screen.dart';
 import 'package:provider/provider.dart';
-import 'firebase_options.dart';
 
-import './screens/auth_screen.dart';
 import './providers/auth.dart';
+import './providers/dungeon_master_provider.dart';
+import './providers/games_provider.dart';
+import './screens/auth_screen.dart';
+import './screens/dash_screen.dart';
+import './screens/dm_zone_screen.dart';
+import './screens/edit_character_screen.dart';
+import 'firebase_options.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized(); // added line
   await DotEnv.load(fileName: '.env');
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  } catch (e) {
-    print('Error initializing Firebase: $e');
+
+  if (Firebase.apps.length == 0) {
+    try {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    } catch (e) {
+      print('Error initializing Firebase: $e');
+    }
   }
   runApp(MyApp());
 }
@@ -30,6 +35,12 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider.value(
             value: Auth(),
+          ),
+          ChangeNotifierProvider.value(
+            value: GamesProvider(),
+          ),
+          ChangeNotifierProvider.value(
+            value: DungeonMasterProvider(),
           ),
         ],
         child: Consumer<Auth>(
@@ -50,9 +61,9 @@ class MyApp extends StatelessWidget {
               ),
               home: auth.isAuth ? DashScreen(auth.token, auth.userId) : AuthScreen(),
               routes: {
-                TempScreen.routeName: ((ctx) => TempScreen()),
                 DashScreen.routeName: ((ctx) => DashScreen(auth.token, auth.userId)),
                 EditCharacterScreen.routeName: ((ctx) => EditCharacterScreen(auth.token, auth.userId)),
+                DmZoneScreen.routeName: (((context) => DmZoneScreen())),
               }),
         ));
   }

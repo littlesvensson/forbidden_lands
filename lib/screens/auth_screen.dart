@@ -41,8 +41,8 @@ class AuthScreen extends StatelessWidget {
                 children: <Widget>[
                   Flexible(
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 20.0),
-                      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 94.0),
+                      margin: EdgeInsets.all(20.0),
+                      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 25.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         color: Colors.brown,
@@ -55,10 +55,10 @@ class AuthScreen extends StatelessWidget {
                         ],
                       ),
                       child: Text(
-                        'FL Aid',
+                        'Forbidden Heroes',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 36,
+                          fontSize: 24,
                           fontFamily: 'Lato',
                           fontWeight: FontWeight.normal,
                         ),
@@ -146,6 +146,7 @@ class _AuthCardState extends State<AuthCard> {
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
+      print(error);
       const errorMessage = 'Could not authenticate you. Please try again later.';
       _showErrorDialog(errorMessage);
     }

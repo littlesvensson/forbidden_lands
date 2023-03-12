@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -40,7 +39,7 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       final url = Uri.parse(
-          'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/$userId/characters.json?auth=$authToken');
+          'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/users/$userId/characters.json?auth=$authToken');
       final response = await http.post(url,
           body: json.encode({
             'name': _name,

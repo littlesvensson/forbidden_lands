@@ -28,10 +28,8 @@ class _DashScreenState extends State<DashScreen> {
   _DashScreenState(this.authToken, this.userId);
 
   Future<void> _fetchCharacters() async {
-    print('authToken: ');
-    print(authToken);
     final url = Uri.parse(
-        'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/$userId/characters.json?auth=$authToken');
+        'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/users/$userId/characters.json?auth=$authToken');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
