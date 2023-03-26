@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../models/game.dart';
-import '../providers/auth.dart';
+import 'auth_provider.dart';
 
 class GamesProvider extends ChangeNotifier {
   Future<String> getUserId(BuildContext context) async {

@@ -16,7 +16,7 @@ class CharactersList extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
           child: Card(
             elevation: 4.0,
-            child: CharacterListItem(characters[index]),
+            child: CharacterListItem(characters[index], context),
           ),
         );
       },

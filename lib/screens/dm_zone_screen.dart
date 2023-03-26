@@ -3,7 +3,7 @@ import 'package:forbidden_lands/providers/dungeon_master_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../models/game.dart';
-import '../providers/auth.dart';
+import '../providers/auth_provider.dart';
 import '../providers/games_provider.dart';
 
 class DmZoneScreen extends StatefulWidget {

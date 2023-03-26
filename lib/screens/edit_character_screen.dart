@@ -1,31 +1,23 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
-enum Kin {
-  human,
-  dwarf,
-  elf,
-  halfling,
-}
+import '../models/character.dart';
+import '../providers/characters_provider.dart';
 
 class EditCharacterScreen extends StatefulWidget {
   static const routeName = '/edit-character';
 
-  final String authToken;
-  final String userId;
+  // final String authToken;
+  // final String userId;
 
-  EditCharacterScreen(this.authToken, this.userId);
+  EditCharacterScreen();
 
   @override
-  _EditCharacterScreenState createState() => _EditCharacterScreenState(authToken, userId);
+  _EditCharacterScreenState createState() => _EditCharacterScreenState();
 }
 
 class _EditCharacterScreenState extends State<EditCharacterScreen> {
   final _formKey = GlobalKey<FormState>();
-  final String authToken;
-  final String userId;
 
   String _name;
   String _age;
@@ -33,33 +25,82 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
   String _profession;
   Kin _selectedKin;
 
-  _EditCharacterScreenState(this.authToken, this.userId);
+  var _editedCharacter = Character(
+    id: null,
+    name: '',
+    age: 0,
+    kin: null,
+    profession: '',
+  );
+  var _initValues = {
+    'name': '',
+    'age': '',
+    'kin': '',
+    'profession': '',
+  };
+  var _isInit = true;
+
+  _EditCharacterScreenState();
 
   Future<void> _saveForm() async {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
-      final url = Uri.parse(
-          'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/users/$userId/characters.json?auth=$authToken');
-      final response = await http.post(url,
-          body: json.encode({
-            'name': _name,
-            'age': _age,
-            'kin': _kin,
-            'profession': _profession,
-          }));
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        Navigator.of(context).pop();
+      if (_editedCharacter.id != null) {
+        print('ISNOTNULL');
+        var editedCharacter = Character(
+            id: _editedCharacter.id,
+            name: _name,
+            age: int.parse(_age),
+            kin: Kin.values.firstWhere((e) => e.toString().split('.').last == _kin),
+            profession: _profession);
+
+        print('name');
+        print(editedCharacter.name);
+        print(editedCharacter.kin);
+        await Provider.of<CharactersProvider>(context, listen: false)
+            .updateCharacter(editedCharacter.id, editedCharacter);
       } else {
-        print('Failed to add character: ${response.statusCode}');
+        print('NULL');
+        // try {
+        var newCharacter = Character(
+            name: _name,
+            age: int.parse(_age),
+            kin: Kin.values.firstWhere((e) => e.toString().split('.').last == _kin),
+            profession: _profession);
+        await Provider.of<CharactersProvider>(context, listen: false).addCharacter(newCharacter);
+        // } catch (error) {
+        //   print(error);
+        // }
+      }
+      Navigator.of(context).pop();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      final characterId = ModalRoute.of(context).settings.arguments as String;
+      if (characterId != null) {
+        _editedCharacter = Provider.of<CharactersProvider>(context, listen: false).findById(characterId);
+
+        _initValues = {
+          'name': _editedCharacter.name,
+          'age': _editedCharacter.age.toString(),
+          'kin': _editedCharacter.kin.toString(),
+          'profession': _editedCharacter.profession,
+        };
+        _selectedKin = _editedCharacter.kin;
       }
     }
+    _isInit = false;
+    super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Character'),
+        title: _editedCharacter.id == null ? Text('Add Character') : Text('Edit Character'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -68,6 +109,7 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
           child: Column(
             children: [
               TextFormField(
+                initialValue: _initValues['name'],
                 decoration: InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value.isEmpty) {
@@ -80,6 +122,7 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
                 },
               ),
               TextFormField(
+                initialValue: _initValues['age'],
                 decoration: InputDecoration(labelText: 'Age'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
@@ -93,6 +136,7 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
                 },
               ),
               TextFormField(
+                initialValue: _initValues['profession'],
                 decoration: InputDecoration(labelText: 'Profession'),
                 validator: (value) {
                   if (value.isEmpty) {
@@ -133,7 +177,7 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
               SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: _saveForm,
-                child: Text('Add Character'),
+                child: _editedCharacter.id == null ? Text('Add Character') : Text('Edit Character'),
               ),
             ],
           ),

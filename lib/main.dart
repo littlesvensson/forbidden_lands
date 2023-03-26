@@ -3,9 +3,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 
-import './providers/auth.dart';
+import 'providers/auth_provider.dart';
 import './providers/dungeon_master_provider.dart';
 import './providers/games_provider.dart';
+import 'providers/characters_provider.dart';
 import './screens/auth_screen.dart';
 import './screens/dash_screen.dart';
 import './screens/dm_zone_screen.dart';
@@ -42,6 +43,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: DungeonMasterProvider(),
           ),
+          ChangeNotifierProxyProvider<Auth, CharactersProvider>(
+            create: (BuildContext context) => CharactersProvider(Provider.of<Auth>(context, listen: false)),
+            update: (ctx, auth, previousCharacters) => CharactersProvider(auth),
+          ),
         ],
         child: Consumer<Auth>(
           builder: (ctx, auth, _) => MaterialApp(
@@ -62,7 +67,7 @@ class MyApp extends StatelessWidget {
               home: auth.isAuth ? DashScreen(auth.token, auth.userId) : AuthScreen(),
               routes: {
                 DashScreen.routeName: ((ctx) => DashScreen(auth.token, auth.userId)),
-                EditCharacterScreen.routeName: ((ctx) => EditCharacterScreen(auth.token, auth.userId)),
+                EditCharacterScreen.routeName: ((ctx) => EditCharacterScreen()),
                 DmZoneScreen.routeName: (((context) => DmZoneScreen())),
               }),
         ));
