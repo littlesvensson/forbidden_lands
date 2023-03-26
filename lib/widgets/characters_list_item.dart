@@ -54,7 +54,7 @@ class CharacterListItem extends StatelessWidget {
               ),
               SizedBox(height: 4.0),
               Text(
-                'Kin: ${character['kin']}',
+                'Kin: ${character['kin'].toString().split('.').last}',
                 style: TextStyle(fontSize: 16.0),
               ),
               SizedBox(height: 4.0),

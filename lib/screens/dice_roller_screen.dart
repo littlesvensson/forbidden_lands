@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 class DiceRollerScreen extends StatefulWidget {
   const DiceRollerScreen({Key key}) : super(key: key);
 
+  static const routeName = '/dice-roller';
+
   @override
   _DiceRollerScreenState createState() => _DiceRollerScreenState();
 }

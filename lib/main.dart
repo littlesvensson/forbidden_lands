@@ -13,6 +13,7 @@ import './screens/dash_screen.dart';
 import './screens/dm_zone_screen.dart';
 import './screens/edit_character_screen.dart';
 import 'firebase_options.dart';
+import 'screens/dice_roller_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized(); // added line
@@ -76,7 +77,8 @@ class MyApp extends StatelessWidget {
               routes: {
                 DashScreen.routeName: ((ctx) => DashScreen(auth.token, auth.userId)),
                 EditCharacterScreen.routeName: ((ctx) => EditCharacterScreen()),
-                DmZoneScreen.routeName: (((context) => DmZoneScreen())),
+                DmZoneScreen.routeName: (((ctx) => DmZoneScreen())),
+                DiceRollerScreen.routeName: (((ctx) => DiceRollerScreen())),
               }),
         ));
   }

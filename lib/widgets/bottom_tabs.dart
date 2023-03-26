@@ -40,12 +40,12 @@ class _BottomTabsState extends State<BottomTabs> {
       items: [
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).primaryColor,
-          icon: Icon(Icons.category),
+          icon: Icon(Icons.castle),
           label: 'DM Zone',
         ),
         BottomNavigationBarItem(
           backgroundColor: Theme.of(context).primaryColor,
-          icon: Icon(Icons.star),
+          icon: Icon(Icons.waving_hand),
           label: 'Dice',
         ),
       ],
