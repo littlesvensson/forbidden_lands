@@ -26,10 +26,7 @@ class GamesProvider extends ChangeNotifier {
     final userId = auth.userId;
     final url = Uri.parse(
         'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/games.json?orderBy="dungeon_master"&equalTo="$userId"&auth=$authToken');
-    print("userId");
-    print(userId);
     final response = await http.get(url);
-    print(response.body);
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> gamesData = json.decode(response.body);
