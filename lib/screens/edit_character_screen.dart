@@ -46,17 +46,12 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       if (_editedCharacter.id != null) {
-        print('ISNOTNULL');
         var editedCharacter = Character(
             id: _editedCharacter.id,
             name: _name,
             age: int.parse(_age),
             kin: Kin.values.firstWhere((e) => e.toString().split('.').last == _kin),
             profession: _profession);
-
-        print('name');
-        print(editedCharacter.name);
-        print(editedCharacter.kin);
         await Provider.of<CharactersProvider>(context, listen: false)
             .updateCharacter(editedCharacter.id, editedCharacter);
       } else {

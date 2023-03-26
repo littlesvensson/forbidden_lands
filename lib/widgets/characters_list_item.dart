@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:forbidden_lands/screens/edit_character_screen.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/characters_provider.dart';
 
 class CharacterListItem extends StatelessWidget {
   final Map<String, dynamic> character;
@@ -9,15 +12,19 @@ class CharacterListItem extends StatelessWidget {
   CharacterListItem(this.character, this.context);
 
   void _editCharacter() {
-    print(character);
     Navigator.of(context).pushNamed(EditCharacterScreen.routeName, arguments: character['id']);
+  }
+
+  void _ondelete(BuildContext context) {
+    final charactersProvider = Provider.of<CharactersProvider>(context, listen: false);
+    charactersProvider.deleteCharacter(character['id']);
   }
 
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: UniqueKey(),
-      //onDismissed: (_) => onDelete(),
+      onDismissed: (_) => _ondelete(context),
       background: Container(
         alignment: Alignment.centerRight,
         padding: EdgeInsets.only(right: 20),

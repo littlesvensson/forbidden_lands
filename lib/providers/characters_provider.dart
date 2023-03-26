@@ -86,6 +86,16 @@ class CharactersProvider with ChangeNotifier {
     }
   }
 
+  Future<void> deleteCharacter(String characterId) async {
+    final userId = this.auth.userId;
+    final authToken = this.auth.token;
+    final url = Uri.parse(
+        'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/users/$userId/characters/$characterId.json?auth=$authToken');
+    final response = await http.delete(url);
+    _items.removeWhere((char) => char['id'] == characterId);
+    notifyListeners();
+  }
+
   List<Map<String, dynamic>> get items {
     return [..._items];
   }
