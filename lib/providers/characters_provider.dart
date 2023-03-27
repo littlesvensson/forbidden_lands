@@ -110,4 +110,39 @@ class CharactersProvider with ChangeNotifier {
       profession: characterMap['profession'],
     );
   }
+
+  Future<void> addCharacterToGame(String characterId, String gameName, String password) async {
+    final authToken = this.auth.token;
+
+    final url = Uri.parse(
+        'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/games.json?orderBy="game"&equalTo="$gameName"&auth=$authToken');
+    try {
+      final response = await http.get(url);
+      print(response.body);
+      print(response.statusCode);
+      final jsonResponse = jsonDecode(response.body);
+      if (jsonResponse == null || jsonResponse.isEmpty) {
+        print('Game does not exit');
+        //TO DO: pop up
+      } else {
+        final returnedPas = jsonResponse.values.first['password'];
+
+        if (returnedPas == password) {
+          final gameId = jsonResponse.keys.first;
+          final existingPlayers = jsonResponse[gameId]['players'] ?? [];
+          final updatedPlayers = [...existingPlayers, characterId];
+          final patchUrl = Uri.parse(
+              'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/games/$gameId.json?auth=$authToken');
+          final patchResponse = await http.patch(patchUrl, body: '{"players": ${jsonEncode(updatedPlayers)}}');
+        } else {
+          print('passwords do not match');
+          //TO DO: pop up
+        }
+      }
+    } catch (error) {
+      throw error;
+    }
+
+    notifyListeners();
+  }
 }
