@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart' as DotEnv;
 import 'package:firebase_core/firebase_core.dart';
-import 'package:forbidden_lands/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 
 import 'providers/auth_provider.dart';
 import './providers/dungeon_master_provider.dart';
 import './providers/games_provider.dart';
-import 'providers/characters_provider.dart';
+import './providers/characters_provider.dart';
 import './screens/auth_screen.dart';
+import 'screens/add_to_game_screen.dart';
 import './screens/dash_screen.dart';
-import './screens/dm_zone_screen.dart';
+import './screens/dice_roller_screen.dart';
 import './screens/edit_character_screen.dart';
-import 'firebase_options.dart';
-import 'screens/dice_roller_screen.dart';
+import './screens/dm_zone_screen.dart';
+import './screens/splash_screen.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized(); // added line
@@ -79,6 +80,7 @@ class MyApp extends StatelessWidget {
                 EditCharacterScreen.routeName: ((ctx) => EditCharacterScreen()),
                 DmZoneScreen.routeName: (((ctx) => DmZoneScreen())),
                 DiceRollerScreen.routeName: (((ctx) => DiceRollerScreen())),
+                AddToGameScreen.routeName: (((ctx) => AddToGameScreen())),
               }),
         ));
   }

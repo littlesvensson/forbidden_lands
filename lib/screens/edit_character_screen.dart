@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../models/character.dart';
 import '../providers/characters_provider.dart';
+import 'add_to_game_screen.dart';
 
 class EditCharacterScreen extends StatefulWidget {
   static const routeName = '/edit-character';
@@ -174,6 +175,16 @@ class _EditCharacterScreenState extends State<EditCharacterScreen> {
                 onPressed: _saveForm,
                 child: _editedCharacter.id == null ? Text('Add Character') : Text('Edit Character'),
               ),
+              SizedBox(height: 16.0),
+              if (_editedCharacter.id != null)
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => AddToGameScreen(characterId: _editedCharacter.id),
+                    ));
+                  },
+                  child: Text('Add to game'),
+                ),
             ],
           ),
         ),
