@@ -7,7 +7,11 @@ import 'package:provider/provider.dart';
 import '../models/game.dart';
 import 'auth_provider.dart';
 
-class GamesProvider extends ChangeNotifier {
+class GamesProvider with ChangeNotifier {
+  final auth;
+
+  GamesProvider(this.auth);
+
   Future<String> getUserId(BuildContext context) async {
     return await Provider.of<Auth>(context, listen: true).userId;
   }
@@ -34,6 +38,7 @@ class GamesProvider extends ChangeNotifier {
 
       gamesData.forEach((gameId, gameData) {
         loadedGames.add(Game(
+          id: gameId,
           name: gameData['game'],
           password: gameData['password'],
         ));
@@ -46,6 +51,23 @@ class GamesProvider extends ChangeNotifier {
     } else {
       // handle error
       print('Failed to fetch games: ${response.statusCode}');
+      return [];
+    }
+  }
+
+  Future<List> fetchGamePlayers(gameId) async {
+    print('I GOT HERE!');
+    final authToken = this.auth.token;
+    final url = Uri.parse(
+        'https://forbidden-lands-9083c-default-rtdb.europe-west1.firebasedatabase.app/games/$gameId/players.json?auth=$authToken');
+    final response = await http.get(url);
+    if (response != null) {
+      final playerIds = json.decode(response.body);
+      if (playerIds != null && playerIds.length > 1) {
+        // skip the first element (which is null) and process the remaining player IDs
+        final players = playerIds.sublist(1).map((id) => (id)).toList();
+        return players;
+      }
       return [];
     }
   }

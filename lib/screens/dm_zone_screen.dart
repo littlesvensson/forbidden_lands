@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/game.dart';
 import '../providers/auth_provider.dart';
 import '../providers/games_provider.dart';
+import '../widgets/user_games_list.dart';
 
 class DmZoneScreen extends StatefulWidget {
   const DmZoneScreen({Key key}) : super(key: key);
@@ -93,23 +94,7 @@ class _DmZoneScreenState extends State<DmZoneScreen> {
               child: const Text("Create New Game"),
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: Consumer<GamesProvider>(
-                builder: (context, gamesProvider, child) {
-                  List<Game> userGames = gamesProvider.games;
-                  return ListView.builder(
-                    itemCount: userGames.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Game game = userGames[index];
-                      return ListTile(
-                        title: Text(game.name),
-                        subtitle: Text("Password: ${game.password}"),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
+            UserGamesList(gamesProvider: Provider.of<GamesProvider>(context, listen: false)),
           ],
         ),
       ),

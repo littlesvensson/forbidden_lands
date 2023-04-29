@@ -20,7 +20,7 @@ Future main() async {
   WidgetsFlutterBinding.ensureInitialized(); // added line
   await DotEnv.load(fileName: '.env');
 
-  if (Firebase.apps.length == 0) {
+  if (Firebase.apps.isEmpty) {
     try {
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             value: Auth(),
           ),
           ChangeNotifierProvider.value(
-            value: GamesProvider(),
+            value: GamesProvider(Auth),
           ),
           ChangeNotifierProvider.value(
             value: DungeonMasterProvider(),
